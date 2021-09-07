@@ -7,8 +7,7 @@ on:
     branches: [ main ]
 
 env:
-  project: FrontSystems.Messaging/FrontSystems.Messaging.csproj
-  testProject: FrontSystems.Messaging.Test/FrontSystems.Messaging.Test.csproj
+  project: Karrocon.Messaging.Abstractions/Karrocon.Messaging.Abstractions.csproj
 
 jobs:
   build:
@@ -27,7 +26,7 @@ jobs:
       run: dotnet restore ${{ env.project }}
     - name: Build ${{ env.project }}
       run: dotnet build --no-restore
-    - name: Test ${{ env.testProject }}
+    - name: Test
       run: dotnet test --no-build --verbosity normal
       if: (success() && (github.head_ref == 'refs/heads/main'))
     - name: Publish
