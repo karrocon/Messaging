@@ -53,8 +53,6 @@ steps:
   inputs:
     command: 'push'
     packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
-    nuGetFeedType: 'internal'
-    publishVstsFeed: 'eb493679-dac0-4944-8efd-879d3e38eb3e'
 
 - task: DotNetCoreCLI@2
   displayName: dotnet nuget push symbols
