@@ -24,8 +24,8 @@ jobs:
       run: dotnet nuget add source --username karrocon --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/karrocon/index.json"
     - name: Restore dependencies
       run: dotnet restore ${{ env.project }}
-    - name: Build ${{ env.project }}
-      run: dotnet build --no-restore
+    - name: Build
+      run: dotnet build ${{ env.project }} --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
       if: (success() && (github.head_ref == 'refs/heads/main'))
