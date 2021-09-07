@@ -33,8 +33,8 @@ jobs:
       run: dotnet pack --configuration Release ${{ env.project }}
       if: (success() && (github.ref == 'refs/heads/main'))
     - name: dotnet nuget push
-      run: dotnet nuget push ${{ github.workspace }}/*.nupkg --api-key ${{ secrets.NUGET_GITHUB_PAT }} --source "github"
+      run: dotnet nuget push ${{ github.workspace }}/**/*.nupkg --api-key ${{ secrets.NUGET_GITHUB_PAT }} --source "github"
       if: (success() && (github.ref == 'refs/heads/main'))
     - name: dotnet nuget push symbols
-      run: dotnet nuget push ${{ github.workspace }}/*.snupkg --api-key ${{ secrets.NUGET_GITHUB_PAT }} --source "github"
+      run: dotnet nuget push ${{ github.workspace }}/**/*.snupkg --api-key ${{ secrets.NUGET_GITHUB_PAT }} --source "github"
       if: (success() && (github.ref == 'refs/heads/main'))
