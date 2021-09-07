@@ -26,14 +26,14 @@ steps:
 - task: DotNetCoreCLI@2
   displayName: dotnet test
   enabled: false
-  condition: and(succeeded(), eq(variables['System.PullRequest.TargetBranch'], 'refs/heads/master'))
+  condition: and(succeeded(), eq(variables['System.PullRequest.TargetBranch'], 'refs/heads/main'))
   inputs:
     command: 'test'
     projects: $(testProject)
 
 - task: DotNetCoreCLI@2
   displayName: dotnet pack
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
   inputs:
     command: 'pack'
     includeSymbols: true
@@ -42,14 +42,14 @@ steps:
 
 - task: PublishSymbols@2
   displayName: publish nuget symbols
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
   inputs:
     SearchPattern: '**/bin/**/*.pdb'
     SymbolServerType: 'TeamServices'
 
 - task: DotNetCoreCLI@2
   displayName: dotnet nuget push
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
   inputs:
     command: 'push'
     packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
@@ -58,7 +58,7 @@ steps:
 
 - task: DotNetCoreCLI@2
   displayName: dotnet nuget push symbols
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
   inputs:
     command: 'push'
     packagesToPush: '$(Build.ArtifactStagingDirectory)/*.snupkg'
