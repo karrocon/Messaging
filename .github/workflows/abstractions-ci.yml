@@ -29,7 +29,7 @@ jobs:
       run: dotnet build --no-restore
     - name: Test ${{ env.testProject }}
       run: dotnet test --no-build --verbosity normal
-      if: (success() && (variables['System.PullRequest.TargetBranch'] == 'refs/heads/main'))
+      if: (success() && (github.head_ref == 'refs/heads/main'))
     - name: Publish
       run: dotnet pack --configuration Release ${{ env.project }}
       if: (success() && (github.ref == 'refs/heads/main'))
