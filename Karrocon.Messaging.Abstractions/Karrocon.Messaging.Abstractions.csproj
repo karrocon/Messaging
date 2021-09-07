@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<Authors>Carlos Rodríguez Contreras</Authors>
+		<PackageDescription>Messaging abstractions for Karrocon.Messaging.</PackageDescription>
+		<PackageId>Karrocon.Messaging.Abstractions</PackageId>
+		<PackageVersion>1.0.0</PackageVersion>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<TargetFrameworks>net5.0;netstandard2.0</TargetFrameworks>
+		<Title>Karrocon.Messaging.Abstractions</Title>
+	</PropertyGroup>
+
+</Project>
