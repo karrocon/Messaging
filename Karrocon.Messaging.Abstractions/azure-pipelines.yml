@@ -1,0 +1,64 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+variables:
+  project: Karrocon.Messaging.Abstractions/Karrocon.Messaging.Abstractions.csproj
+  testProject: Karrocon.Messaging.Abstractions.Test/Karrocon.Messaging.Abstractions.Test.csproj
+
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+- task: DotNetCoreCLI@2
+  displayName: dotnet restore
+  inputs:
+    command: 'restore'
+    projects: $(project)
+
+- task: DotNetCoreCLI@2
+  displayName: dotnet build
+  inputs:
+    command: 'build'
+    projects: $(project)
+
+- task: DotNetCoreCLI@2
+  displayName: dotnet test
+  enabled: false
+  condition: and(succeeded(), eq(variables['System.PullRequest.TargetBranch'], 'refs/heads/master'))
+  inputs:
+    command: 'test'
+    projects: $(testProject)
+
+- task: DotNetCoreCLI@2
+  displayName: dotnet pack
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  inputs:
+    command: 'pack'
+    includeSymbols: true
+    packagesToPack: $(project)
+    versioningScheme: 'off'
+
+- task: PublishSymbols@2
+  displayName: publish nuget symbols
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  inputs:
+    SearchPattern: '**/bin/**/*.pdb'
+    SymbolServerType: 'TeamServices'
+
+- task: DotNetCoreCLI@2
+  displayName: dotnet nuget push
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
+    nuGetFeedType: 'internal'
+    publishVstsFeed: 'eb493679-dac0-4944-8efd-879d3e38eb3e'
+
+- task: DotNetCoreCLI@2
+  displayName: dotnet nuget push symbols
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/*.snupkg'
